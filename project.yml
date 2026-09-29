@@ -1,0 +1,54 @@
+name: Budget
+options:
+  bundleIdPrefix: com.christophebuguet
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: fr
+  defaultConfig: Debug
+settings:
+  base:
+    SWIFT_VERSION: "6.2"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  Budget:
+    type: application
+    platform: macOS
+    sources:
+      - App
+      - Core
+      - Features
+      - DesignSystem
+      - path: Resources
+        buildPhase: resources
+      - path: Preview Content
+        type: group
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.christophebuguet.Budget
+        PRODUCT_NAME: Budget
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDevelopmentRegion: fr
+        INFOPLIST_KEY_CFBundleDisplayName: Budget
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.finance
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        INFOPLIST_KEY_LSMinimumSystemVersion: "26.0"
+        COMBINE_HIDPI_IMAGES: YES
+        ENABLE_APP_SANDBOX: YES
+        ENABLE_HARDENED_RUNTIME: YES
+        ENABLE_OUTGOING_NETWORK_CONNECTIONS: YES
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: C4JZ2J7A4P
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        DEVELOPMENT_ASSET_PATHS: '"Preview Content"'
+        OTHER_LDFLAGS: ["-lz"]
+        SWIFT_EMIT_LOC_STRINGS: YES
+      configs:
+        Debug:
+          CODE_SIGN_ENTITLEMENTS: SupportingFiles/Budget-Debug.entitlements
+        Release:
+          CODE_SIGN_ENTITLEMENTS: SupportingFiles/Budget.entitlements
