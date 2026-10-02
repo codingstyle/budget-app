@@ -16,6 +16,12 @@ struct ImportToolbarButton: View {
                 allowsMultipleSelection: false,
                 onCompletion: handleImportResult
             )
+            .sheet(isPresented: $viewModel.isProgressPresented) {
+                ImportProgressView(
+                    message: viewModel.progressMessage,
+                    fraction: viewModel.progressFraction
+                )
+            }
             .sheet(isPresented: $viewModel.isCreatingMissingAccount) {
                 if let household = households.first {
                     MissingAccountSheet(

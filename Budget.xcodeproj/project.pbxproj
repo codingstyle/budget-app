@@ -26,6 +26,7 @@
 		1889BEB57EC9198803E76FC7 /* BNPParibasImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04C308F5ABE7FD436A9C80D /* BNPParibasImporter.swift */; };
 		18FBCC65B30A8B01753BB970 /* ParsedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6246DC70DC0E6FC4EAD09FC9 /* ParsedLabel.swift */; };
 		1A333E74390780DBDBDC8F61 /* RuleTagTreeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6818287527441202C183BB31 /* RuleTagTreeRow.swift */; };
+		206502B90AB075E6A4C83728 /* ImportProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6843D010333AD609DF80C12A /* ImportProgressView.swift */; };
 		208DC0032A9E899D08C40126 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A53D247C489CC879CB4EC11 /* AppError.swift */; };
 		20CFD7B66B99379511E77A7D /* ExpenseHistogramChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C495474C81E3563971B915BE /* ExpenseHistogramChart.swift */; };
 		22DB7806C99576968C2645CE /* AccountDebugHandlerKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99ECC18AA63BFF9851830C77 /* AccountDebugHandlerKey.swift */; };
@@ -239,6 +240,7 @@
 		5F1BCF94E20FD72189170F68 /* DSSymbolPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSSymbolPicker.swift; sourceTree = "<group>"; };
 		6246DC70DC0E6FC4EAD09FC9 /* ParsedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsedLabel.swift; sourceTree = "<group>"; };
 		6818287527441202C183BB31 /* RuleTagTreeRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleTagTreeRow.swift; sourceTree = "<group>"; };
+		6843D010333AD609DF80C12A /* ImportProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportProgressView.swift; sourceTree = "<group>"; };
 		68A27713A00E1C5361906982 /* PaymentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentType.swift; sourceTree = "<group>"; };
 		69B7BDBB40E7A298B0ECC6E6 /* EnseigneSidebarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnseigneSidebarRow.swift; sourceTree = "<group>"; };
 		6EB621B0826360F8BCDAAA41 /* DSEnseigneLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSEnseigneLogo.swift; sourceTree = "<group>"; };
@@ -647,6 +649,7 @@
 			isa = PBXGroup;
 			children = (
 				94958F65D93988252154CC40 /* ImportCoordinatorViewModel.swift */,
+				6843D010333AD609DF80C12A /* ImportProgressView.swift */,
 				EA1553F04A1F4CD595581272 /* ImportToolbarButton.swift */,
 				1AC2E94CCBEA7268BCF616E9 /* MissingAccountSheet.swift */,
 			);
@@ -935,6 +938,7 @@
 				F0605940A648CB871E81ED73 /* ImageResizer.swift in Sources */,
 				5C1B6FBA9B45346605201ACA /* ImportCoordinatorViewModel.swift in Sources */,
 				43CF65BFEF616563D0F794DA /* ImportFingerprint.swift in Sources */,
+				206502B90AB075E6A4C83728 /* ImportProgressView.swift in Sources */,
 				04D4B406C7860DB8CD562005 /* ImportToolbarButton.swift in Sources */,
 				B0C1D26AAB67F4982F0E84D2 /* LabelInterpreter.swift in Sources */,
 				93492FF3FF2ADF468C5E53F3 /* LabelNormalizer.swift in Sources */,
