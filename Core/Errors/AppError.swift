@@ -18,7 +18,7 @@ enum AppError: LocalizedError {
         case .importFailed(let message):
             message
         case .invalidSpreadsheet:
-            "Le fichier Excel BNP Paribas est invalide ou incomplet."
+            "Le fichier Excel n’est pas un relevé BNP Paribas ou Crédit Agricole reconnu."
         case .accountNotFound(let lastFour):
             "Aucun compte ne correspond aux chiffres \(lastFour)."
         case .sharingUnavailable:

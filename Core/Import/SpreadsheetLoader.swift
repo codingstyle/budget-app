@@ -9,6 +9,6 @@ enum SpreadsheetLoader {
         if data.starts(with: [0x50, 0x4B, 0x03, 0x04]) {
             return try XLSXWorkbook.firstSheetCells(from: data)
         }
-        throw AppError.importFailed("Format Excel non reconnu. Utilisez un export BNP au format .xls ou .xlsx.")
+        throw AppError.importFailed("Format Excel non reconnu. Utilisez un export .xls ou .xlsx.")
     }
 }

@@ -14,6 +14,8 @@ enum DecimalParsing {
         let unsigned = withoutCurrency
             .replacingOccurrences(of: "-", with: "")
             .replacingOccurrences(of: "\u{00A0}", with: "")
+            .replacingOccurrences(of: "\u{202F}", with: "")
+            .replacingOccurrences(of: "\u{2009}", with: "")
             .replacingOccurrences(of: " ", with: "")
 
         var normalized = unsigned

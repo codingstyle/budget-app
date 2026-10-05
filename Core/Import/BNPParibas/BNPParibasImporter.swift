@@ -1,23 +1,25 @@
 import Foundation
 
 enum BNPParibasImporter {
-    static func load(from url: URL) throws -> BNPFilePayload {
-        let data = try Data(contentsOf: url)
-        return try parse(data: data)
+    static func matches(_ grid: [Int: [Int: String]]) -> Bool {
+        headerMap(in: grid) != nil
     }
 
-    static func parse(data: Data) throws -> BNPFilePayload {
+    static func parse(data: Data) throws -> StatementPayload {
         let cells = try SpreadsheetLoader.firstSheetCells(from: data)
-        let grid = XLSXWorkbook.grid(from: cells)
+        return try parse(grid: XLSXWorkbook.grid(from: cells))
+    }
+
+    static func parse(grid: [Int: [Int: String]]) throws -> StatementPayload {
         let lastFour = extractLastFour(from: grid[1]?[1] ?? "")
         guard lastFour.count == 4 else {
             throw AppError.invalidSpreadsheet
         }
+        guard let headers = headerMap(in: grid) else {
+            throw AppError.invalidSpreadsheet
+        }
 
         let balanceInfo = parseBalance(header: grid[1]?[2] ?? "", amount: grid[1]?[3] ?? "")
-        let headers = normalizedHeaders(grid[3] ?? [:])
-        try validateHeaders(headers)
-
         let dateColumn = headers["dateoperation"] ?? 1
         let categoryColumn = headers["categorieoperation"] ?? 2
         let subcategoryColumn = headers["souscategorieoperation"] ?? 3
@@ -25,10 +27,10 @@ enum BNPParibasImporter {
         let amountColumn = headers["montantoperation"] ?? 5
         let pointingColumn = headers["pointageoperation"] ?? 6
         let commentColumn = headers["commentaireoperation"] ?? 7
-
-        let maxRow = grid.keys.max() ?? 3
-        var rows: [BNPOperationRow] = []
-        for rowIndex in 4...maxRow {
+        let headerRow = headers["_row"] ?? 3
+        let maxRow = grid.keys.max() ?? headerRow
+        var rows: [StatementOperationRow] = []
+        for rowIndex in (headerRow + 1)...maxRow {
             guard let row = grid[rowIndex] else { continue }
             let label = row[labelColumn]?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
             let amountRaw = row[amountColumn] ?? ""
@@ -41,7 +43,7 @@ enum BNPParibasImporter {
                 continue
             }
             rows.append(
-                BNPOperationRow(
+                StatementOperationRow(
                     effectDate: effectDate,
                     originalLabel: label,
                     amount: amount,
@@ -53,12 +55,31 @@ enum BNPParibasImporter {
             )
         }
 
-        return BNPFilePayload(
+        return StatementPayload(
+            bank: .bnpParibas,
             accountLastFour: lastFour,
             balanceDate: balanceInfo.date,
             balance: balanceInfo.amount,
             rows: rows
         )
+    }
+
+    private static func headerMap(in grid: [Int: [Int: String]]) -> [String: Int]? {
+        let required = [
+            "dateoperation",
+            "categorieoperation",
+            "souscategorieoperation",
+            "libelleoperation",
+            "montantoperation"
+        ]
+        for (index, row) in grid {
+            var headers = SpreadsheetHeaders.normalized(row)
+            let hasRequired = required.allSatisfy { headers[$0] != nil }
+            guard hasRequired else { continue }
+            headers["_row"] = index
+            return headers
+        }
+        return nil
     }
 
     private static func extractLastFour(from text: String) -> String {
@@ -69,35 +90,5 @@ enum BNPParibasImporter {
     private static func parseBalance(header: String, amount: String) -> (date: Date?, amount: Decimal?) {
         let date = header.split(separator: " ").last.map(String.init).flatMap(FrenchDateParsing.parse)
         return (date, DecimalParsing.parse(amount))
-    }
-
-    private static func normalizedHeaders(_ row: [Int: String]) -> [String: Int] {
-        var result: [String: Int] = [:]
-        for (column, title) in row {
-            result[normalizeHeader(title)] = column
-        }
-        return result
-    }
-
-    private static func normalizeHeader(_ title: String) -> String {
-        title
-            .folding(options: [.diacriticInsensitive, .caseInsensitive], locale: Locale(identifier: "fr_FR"))
-            .filter(\.isLetter)
-            .lowercased()
-    }
-
-    private static func validateHeaders(_ headers: [String: Int]) throws {
-        let required = [
-            "dateoperation",
-            "categorieoperation",
-            "souscategorieoperation",
-            "libelleoperation",
-            "montantoperation",
-            "pointageoperation",
-            "commentaireoperation"
-        ]
-        for key in required where headers[key] == nil {
-            throw AppError.invalidSpreadsheet
-        }
     }
 }

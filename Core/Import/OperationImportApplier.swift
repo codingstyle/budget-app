@@ -9,7 +9,7 @@ struct OperationImportSummary: Sendable {
 enum OperationImportApplier {
     @MainActor
     static func apply(
-        payload: BNPFilePayload,
+        payload: StatementPayload,
         account: BankAccount,
         context: ModelContext,
         onProgress: ((String, Double) -> Void)? = nil
@@ -36,7 +36,7 @@ enum OperationImportApplier {
                 )
                 let operation = Operation(
                     effectDate: row.effectDate,
-                    valueDate: parsed.valueDate ?? row.effectDate,
+                    valueDate: row.valueDate ?? parsed.valueDate ?? row.effectDate,
                     originalLabel: row.originalLabel,
                     displayLabel: parsed.displayLabel,
                     merchant: parsed.merchant,

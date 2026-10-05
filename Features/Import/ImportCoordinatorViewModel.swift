@@ -12,7 +12,7 @@ final class ImportCoordinatorViewModel {
     var isCreatingMissingAccount = false
     var errorMessage: String?
     var statusMessage: String?
-    var pendingPayload: BNPFilePayload?
+    var pendingPayload: StatementPayload?
     var pendingLastFour = ""
     var missingAccountNumber = ""
     var missingAccountLabel = ""
@@ -93,7 +93,7 @@ final class ImportCoordinatorViewModel {
             let data = try Data(contentsOf: url)
             updateProgress(message: "Analyse du relevé…", fraction: 0.18)
             await Task.yield()
-            let payload = try BNPParibasImporter.parse(data: data)
+            let payload = try BankStatementImporter.parse(data: data)
             guard let household else {
                 throw AppError.householdMissing
             }
@@ -103,8 +103,9 @@ final class ImportCoordinatorViewModel {
             } else {
                 pendingPayload = payload
                 pendingLastFour = payload.accountLastFour
-                missingAccountNumber = payload.accountLastFour
+                missingAccountNumber = payload.accountNumber.isEmpty ? payload.accountLastFour : payload.accountNumber
                 missingAccountLabel = "Compte \(payload.accountLastFour)"
+                missingAccountBank = payload.bank
                 hideProgress()
                 await Task.yield()
                 isCreatingMissingAccount = true
@@ -116,7 +117,7 @@ final class ImportCoordinatorViewModel {
     }
 
     private func apply(
-        payload: BNPFilePayload,
+        payload: StatementPayload,
         account: BankAccount,
         context: ModelContext
     ) async throws -> OperationImportSummary {
